@@ -1,3 +1,5 @@
+API is running on port 8080. Swagger is running on port 8001.
+
 ## Usage 
 Build and run:
 ```
