@@ -3,8 +3,10 @@ package main
 import (
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/nyaruka/phonenumbers"
 )
 
 
@@ -20,11 +22,26 @@ type Parsed struct {
 }
 
 func ParseMsisdn(msisdn string) (*Parsed, error) {
+	trimPlus := strings.TrimLeft(msisdn, "+")
+	trimZeroes := strings.TrimLeft(trimPlus, "0")
+	prefixed := "+" + trimZeroes
+
+	num, err := phonenumbers.Parse(prefixed, "")
+	if err != nil {
+		return nil, err
+	}
+
+	regionCode := phonenumbers.GetRegionCodeForNumber(num)
+	carrier, err := phonenumbers.GetCarrierForNumber(num, regionCode)
+	if err != nil {
+		return nil, err
+	}
+
 	return &Parsed{
-		MnoIdentifier:     "",
-		CountryCode:       0,
-		SubscriberNumber:  "",
-		CountryIdentifier: "",
+		MnoIdentifier:     carrier,
+		CountryCode:       *num.CountryCode,
+		SubscriberNumber:  phonenumbers.Format(num, phonenumbers.NATIONAL),
+		CountryIdentifier: regionCode,
 	}, nil
 }
 
