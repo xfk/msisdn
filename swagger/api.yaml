@@ -9,7 +9,7 @@ paths:
     post:
       summary: "Submit MSISDN"
       description: ""
-      operationId: "addPet"
+      operationId: "parseMsisdn"
       consumes:
       - "application/json"
       produces:
@@ -31,9 +31,6 @@ paths:
 definitions:
   Input:
     type: "object"
-    required:
-    - "name"
-    - "photoUrls"
     properties:
       msdisdn:
         type: "string"
