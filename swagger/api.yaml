@@ -1,0 +1,52 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "MSISDN"
+schemes:
+- "http"
+paths:
+  /msisdn:
+    post:
+      summary: "Submit MSISDN"
+      description: ""
+      operationId: "addPet"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "MSISDN value for parsing"
+        required: true
+        schema:
+          $ref: "#/definitions/Input"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Parsed"
+        "400":
+          description: "Invalid input"
+definitions:
+  Input:
+    type: "object"
+    required:
+    - "name"
+    - "photoUrls"
+    properties:
+      msdisdn:
+        type: "string"
+        example: "918369110173"
+  Parsed:
+    type: "object"
+    properties:
+      mno_identifier:
+        type: "string"
+      country_code:
+        type: "integer"
+        format: "int32"
+      subscriber_number:
+        type: "string"
+      country_identifier:
+        type: "string"
